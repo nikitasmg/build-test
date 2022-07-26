@@ -1,0 +1,39 @@
+// colors
+$color-secondary: #969DC3;
+$color-main: #2D3B87;
+$color-light-bg:#F4F5F9;
+$color-dark-bg:#E0E3EE;
+$color-success: #69C57F;
+$color-white: #fff;
+
+// fons-size
+$fs-title:20px;
+$fs-title-m:15px;
+$fs-title-s:13px;
+
+$fs-text:15px;
+$fs-text-m:13px;
+
+// border-radius
+
+$b-radius-sm:10px;
+$b-radius-xs:5px;
+$b-radius-m:20px;
+
+// transition
+$transition: linear 0.3s all;
+
+// mixins
+@mixin title {
+  font-weight: 500;
+  line-height: 1;
+  color: $color-main;
+}
+
+@mixin text {
+  font-weight: 400;
+  line-height: 1;
+  color: $color-main;
+}
+
+

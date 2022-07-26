@@ -1,0 +1,38 @@
+@import "theme";
+@import url('https://fonts.googleapis.com/css2?family=Rubik:wght@400;500&display=swap');
+.container {
+  max-width: 1200px;
+  margin: auto;
+}
+
+* {
+  font-family: 'Rubik', serif;
+  font-weight: 400;
+}
+
+.title {
+  @include title;
+  font-size: $fs-title;
+}
+.title-m {
+  @include title;
+  font-size:$fs-title-m;
+}
+.title-s {
+  @include title;
+  font-size:$fs-title-s;
+}
+
+.text {
+  @include text;
+  font-size: $fs-text;
+}
+
+.text-m {
+  @include text;
+  font-size: $fs-text-m;
+}
+
+.text-light {
+  color: $color-secondary!important;
+}
