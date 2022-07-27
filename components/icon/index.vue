@@ -1,8 +1,6 @@
 <template>
   <component
       :is="iconsMap[props.type]"
-      :width="props.width || 'auto'"
-      :height="props.height || 'auto'"
       :style="{
       'min-width': props.width ? `${props.width}px` : 'auto',
       'min-height': props.height ? `${props.height}px` : 'auto',
@@ -21,6 +19,7 @@ import Box from '@/components/icon/icons/box.vue'
 import Geo from '@/components/icon/icons/geo.vue'
 import Bag from '@/components/icon/icons/bag.vue'
 import Search from '@/components/icon/icons/search.vue'
+import FilledHeart from '@/components/icon/icons/filledHeart.vue'
 
 
 interface Props {
@@ -36,7 +35,7 @@ const iconsMap = {
   geo: Geo,
   bag: Bag,
   search: Search,
-
+  filledHeart: FilledHeart,
 }
 </script>
 
