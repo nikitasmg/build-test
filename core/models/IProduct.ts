@@ -1,6 +1,7 @@
 import {Ref} from "@vue/reactivity";
 
 export interface Item {
+    id: number,
     type: string,
     name: string,
     city: string,
