@@ -3,8 +3,11 @@
   "scripts": {
     "build": "nuxt build",
     "dev": "nuxt dev",
+    "start": "concurrently \"yarn run dev\" \"yarn run json\"",
     "generate": "nuxt generate",
-    "preview": "nuxt preview"
+    "preview": "nuxt preview",
+    "json": "json-server --watch db.json --port 3004"
+
   },
   "devDependencies": {
     "nuxt": "3.0.0-rc.6"
@@ -12,6 +15,7 @@
   "dependencies": {
     "@nuxtjs/axios": "^5.13.6",
     "@pinia/nuxt": "^0.3.1",
+    "concurrently": "^7.3.0",
     "json-server": "^0.17.0",
     "pinia": "^2.0.17",
     "sass": "^1.54.0",
