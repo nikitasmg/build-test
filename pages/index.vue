@@ -1,8 +1,8 @@
 <template>
-  <CardList :typeOfPage="TypeOfPage.ALL"/>
+  <CardList :typeOfPage="Routes.PRODUCTS"/>
 </template>
 <script setup>
 import CardList from "../components/cardList/CardList";
-import {TypeOfPage} from "../core/enums";
+import {Routes} from "../core/enums";
 
 </script>
