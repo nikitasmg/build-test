@@ -3,16 +3,16 @@
     <div class="header">
       <div class="strip"></div>
       <div class="links">
-        <NuxtLink to="/" active-class="active" class="link title-s">
-          <Icon type="heart" width="17" height="17"/>
-          Склад
-        </NuxtLink>
         <NuxtLink to="/favorite" active-class="active" class="link title-s">
-          <Icon type="box"  width="17" height="17"/>
+          <Icon type="box"  />
           Избранное
         </NuxtLink>
+        <NuxtLink to="/" active-class="active" class="link title-s">
+          <Icon type="heart" />
+          Склад
+        </NuxtLink>
         <NuxtLink to="/deals" active-class="active" class="link title-s">
-          <Icon type="bag"  width="17" height="17"/>
+          <Icon type="bag" />
           Сделки
         </NuxtLink>
       </div>
