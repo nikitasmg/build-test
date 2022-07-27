@@ -31,18 +31,34 @@
           <span>{{ localePrice }} ₽</span>
         </div>
       </div>
-      <div class="button-container">
-        <MyButton v-if="isAddAction" style="padding: 17px 35px" color="secondary"
-                  @click="emits('action', {type:Enums.ProductActions.ADD_TO_DEALS, data:props.product})"> Добавить
-          в сделки
+      <div class="button-container" :class="{favorite: isFavoritePage}">
+        <MyButton
+            v-if="isProductsPage || isFavoritePage"
+            style="padding: 17px 35px" color="secondary"
+            :disabled="isDealsButtonActive"
+            @click="addToDeals"
+        >
+
+          {{isDealsButtonActive ? 'Добавлено' : 'Добавить в сделки'  }}
         </MyButton>
-        <MyButton v-else style="padding: 12px 70px" color="success"
-                  @click="emits('action', {type:Enums.ProductActions.BUY_PRODUCT, data:props.product})"> Оплатить
+        <MyButton
+            v-if="isDealsPage || isFavoritePage"
+            style="padding: 12px 70px"
+            color="success"
+            @click="isPayButtonActive = true"
+        >
+          {{isPayButtonActive ? 'Оплачено' : 'Оплатить'  }}
         </MyButton>
-        <MyButton style="padding: 18px 16px" color="secondary"
-                  @click="emits('action', {type:Enums.ProductActions.ADD_TO_FAVORITE, data:props.product})">
+        <MyButton
+            v-if="isProductsPage || isDealsPage"
+            style="padding: 18px 16px"
+            :class="{active: isFavoriteButtonActive}"
+            color="secondary"
+            @click="addToFavorite()"
+        >
           <template #icon>
-            <Icon type="heart" width="16" heigth="14"/>
+            <Icon v-if="isFavoriteButtonActive" type="filledHeart"/>
+            <Icon v-else type="heart"/>
           </template>
         </MyButton>
       </div>
@@ -51,23 +67,37 @@
 </template>
 
 <script setup lang="ts">
-import {computed} from "@vue/reactivity";
+import {computed, ref} from "@vue/reactivity";
 import MyButton from "~/components/UI/myButton/MyButton.vue";
 import * as IProduct from '@/core/models/IProduct'
 import * as Enums from '@/core/enums'
 
 interface Props {
   product?: IProduct.Item,
-  action: Enums.Actions;
+  typeOfPage: Enums.Routes,
 }
 
 const props = defineProps<Props>()
 const emits = defineEmits(['action'])
+const isPayButtonActive = ref(false)
+const isFavoriteButtonActive = ref(false)
+const isDealsButtonActive = ref(false)
 
-const finalPrice = computed(() => (props.product.price * props.product.count).toLocaleString('ru-RU'))
-const localePrice = computed(() => (props.product.price).toLocaleString('ru-RU'))
-const isAddAction = computed(() => props.action === Enums.Actions.ADD)
 
+const finalPrice = computed((): string => (props.product.price * props.product.count).toLocaleString('ru-RU'))
+const localePrice = computed((): string => (props.product.price).toLocaleString('ru-RU'))
+const isProductsPage = computed((): boolean => props.typeOfPage === Enums.Routes.PRODUCTS)
+const isFavoritePage = computed((): boolean => props.typeOfPage === Enums.Routes.FAVORITE)
+const isDealsPage = computed((): boolean => props.typeOfPage === Enums.Routes.DEALS)
+
+const addToFavorite = () => {
+  emits('action', {type:Enums.ProductActions.ADD_TO_FAVORITE, data:props.product});
+  isFavoriteButtonActive.value = true
+}
+const addToDeals = () => {
+  emits('action', {type:Enums.ProductActions.ADD_TO_DEALS, data:props.product})
+  isDealsButtonActive.value = true
+}
 </script>
 
 <style scoped lang="scss">
@@ -184,6 +214,12 @@ const isAddAction = computed(() => props.action === Enums.Actions.ADD)
       display: flex;
       align-items: center;
       justify-content: space-between;
+
+      &.favorite {
+        flex-direction: column;
+        row-gap: 10px;
+      }
+
     }
   }
 
