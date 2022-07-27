@@ -8,7 +8,7 @@
     />
     <MyButton v-if="props.type === 'search'" color="main" class="input__button">
       <template #icon>
-        <Icon type="search" width="15" heigth="15"/>
+        <Icon type="search" />
       </template>
     </MyButton>
   </label>
