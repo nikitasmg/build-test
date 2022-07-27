@@ -168,6 +168,8 @@ const addToDeals = () => {
         width: max-content;
 
         padding: 8px;
+        margin-bottom: 12px;
+
         background-color: $color-light-bg;
         border-radius: $b-radius-sm;
 
