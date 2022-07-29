@@ -4,11 +4,11 @@
       <div class="strip"></div>
       <div class="links">
         <NuxtLink to="/favorite" active-class="active" class="link title-s">
-          <Icon type="box"  />
+          <Icon type="heart"  />
           Избранное
         </NuxtLink>
         <NuxtLink to="/" active-class="active" class="link title-s">
-          <Icon type="heart" />
+          <Icon type="box" />
           Склад
         </NuxtLink>
         <NuxtLink to="/deals" active-class="active" class="link title-s">
