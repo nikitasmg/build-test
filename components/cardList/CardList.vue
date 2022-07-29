@@ -1,19 +1,19 @@
 <template>
-  <div class="container">
+  <div class="container" v-if="visibleData">
     <div class="row">
       <Filter :list="constant.filterList" @click="changeFilter"/>
       <MyInput v-model.lazy.trim="searchText" :placeholder="'Найти'" type="search"/>
     </div>
-    <div v-if="!products?.length" class="title">Нет записей</div>
+    <div v-if="!products?.length || !visibleData.length" class="title">Нет записей</div>
     <div v-else-if="pending" class="title">Загрузка...</div>
     <div v-else-if="error" class="title">Произошла ошибка...</div>
     <TransitionGroup v-else name="list" tag="div" class="cards">
       <Card
-          v-for="product in visibleData"
+          v-for="product in products"
           class="card"
           :key="product.id"
           :product="product"
-          :typeOfPage="props.typeOfPage"
+          :filterType="props.filterType"
           @action="handleAction"
       />
     </TransitionGroup>
@@ -21,7 +21,7 @@
 </template>
 
 <script setup lang="ts">
-import {computed, ref} from "@vue/reactivity";
+import {computed, ref} from "vue";
 import Filter from "../filter/Filter.vue";
 import MyInput from "~/components/UI/myInput/MyInput.vue";
 import * as constant from '~/core/constants'
@@ -29,49 +29,48 @@ import * as IProduct from '~/core/models/IProduct'
 import Card from "~/components/card/Card.vue";
 import * as Enums from "~/core/enums";
 import {useFetchProducts} from "~/composables/useFetchProducts";
+import {useFilterProducts} from "~/composables/useFilterProducts";
+
 
 interface Props {
-  typeOfPage: Enums.Routes
+  filterType: Enums.FilterType
 }
 
 const props = defineProps<Props>()
 const searchText = ref('')
 const filter = ref('Все типы')
-const isPayButtonActive = ref(false)
+
+// API
+const {data: products, error, pending} = useFilterProducts()
+console.log(products.value)
+const {updateProduct} = useFetchProducts()
+
+
+const visibleData = computed((): IProduct.Item[] => {
+  return filterPost(searchEmp(products.value, searchText.value), filter.value);
+})
 
 const changeFilter = (e: string) => {
   filter.value = e
 }
 
-const filterPost = (items: IProduct.Item[], filter: string):IProduct.Item[] => {
+const filterPost = (items: IProduct.Item[], filter: string): IProduct.Item[] => {
   if (filter === 'Все типы') {
     return items
   }
   return items.filter(el => el.type === filter)
 };
 
-const searchEmp = (items: IProduct.Item[], term: string):IProduct.Item[] => {
+const searchEmp = (items: IProduct.Item[], term: string): IProduct.Item[] => {
   if (!term) {
     return items;
   }
   return items.filter((el) => el.name.toLowerCase().indexOf(term.toLowerCase()) > -1);
 };
-const visibleData = computed(():IProduct.Item[] => {
-  return filterPost(searchEmp(products.value, searchText.value), filter.value);
-})
 
-// API
-const {data: products, error, pending, refresh, addToFavorite, addToDeals} = useFetchProducts(props.typeOfPage)
-refresh()
-const handleAction = (e: { type: string, data: IProduct.Item }) => {
-  switch (e.type) {
-    case Enums.ProductActions.ADD_TO_FAVORITE:
-      addToFavorite(e.data)
-      break
-    case Enums.ProductActions.ADD_TO_DEALS:
-      addToDeals(e.data)
-      break
-  }
+
+const handleAction = (e: { data: IProduct.Item }) => {
+  updateProduct(e.data.id, e.data)
 }
 
 </script>

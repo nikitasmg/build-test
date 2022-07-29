@@ -1,4 +1,5 @@
 import {Ref} from "@vue/reactivity";
+import {ProductStatus} from "~/core/enums";
 
 export interface Item {
     id: number,
@@ -11,6 +12,8 @@ export interface Item {
     price: number,
     count: number,
     image: string,
+    status: ProductStatus,
+    favorite: boolean,
 }
 
 export interface Promise {

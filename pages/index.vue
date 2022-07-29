@@ -1,8 +1,8 @@
 <template>
-  <CardList :typeOfPage="Routes.PRODUCTS"/>
+  <CardList :filterType="FilterType.ALL"/>
 </template>
 <script setup>
 import CardList from "../components/cardList/CardList";
-import {Routes} from "../core/enums";
+import {FilterType} from "../core/enums";
 
 </script>

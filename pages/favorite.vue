@@ -1,9 +1,9 @@
 <template>
-  <CardList :typeOfPage="Routes.FAVORITE"/>
+  <CardList :filterType="FilterType.FAVORITE"/>
 </template>
 <script setup>
 import CardList from "../components/cardList/CardList";
-import {Routes} from "../core/enums";
+import {FilterType} from "../core/enums";
 
 
 </script>

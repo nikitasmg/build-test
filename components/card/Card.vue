@@ -31,33 +31,38 @@
           <span>{{ localePrice }} ₽</span>
         </div>
       </div>
-      <div class="button-container" :class="{favorite: isFavoritePage}">
+      <div class="button-container">
         <MyButton
-            v-if="isProductsPage || isFavoritePage"
-            style="padding: 17px 35px" color="secondary"
-            :disabled="isDealsButtonActive"
+            v-if="filterAll || (filterFavorite && !productPaid) && (!productDeals && !isDealsButtonActive)"
+            class="button add-button"
+            :class="{active:productDeals}"
+            color="secondary"
+            :disabled="productDeals || isDealsButtonActive || productPaid"
             @click="addToDeals"
         >
 
-          {{isDealsButtonActive ? 'Добавлено' : 'Добавить в сделки'  }}
+          {{
+            productDeals || isDealsButtonActive || productPaid ? 'Добавлено' : 'Добавить в сделки'
+          }}
         </MyButton>
         <MyButton
-            v-if="isDealsPage || isFavoritePage"
-            style="padding: 12px 70px"
+            v-if="(productDeals || productPaid) && !filterAll || (filterFavorite && isDealsButtonActive)"
             color="success"
-            @click="isPayButtonActive = true"
+            class="pay-button button"
+            :class="{active:isPayButtonActive || productPaid}"
+            :disabled="isPayButtonActive || productPaid"
+            @click="payProduct"
         >
-          {{isPayButtonActive ? 'Оплачено' : 'Оплатить'  }}
+          {{ isPayButtonActive || productPaid ? 'Оплачено' : 'Оплатить' }}
         </MyButton>
         <MyButton
-            v-if="isProductsPage || isDealsPage"
-            style="padding: 18px 16px"
-            :class="{active: isFavoriteButtonActive}"
+            v-if="!filterFavorite"
+            class="button icon"
             color="secondary"
-            @click="addToFavorite()"
+            @click="toggleFavorite"
         >
           <template #icon>
-            <Icon v-if="isFavoriteButtonActive" type="filledHeart"/>
+            <Icon v-if="isFavoriteButtonActive || props.product.favorite" type="filledHeart"/>
             <Icon v-else type="heart"/>
           </template>
         </MyButton>
@@ -74,7 +79,7 @@ import * as Enums from '@/core/enums'
 
 interface Props {
   product?: IProduct.Item,
-  typeOfPage: Enums.Routes,
+  filterType?: Enums.FilterType
 }
 
 const props = defineProps<Props>()
@@ -86,17 +91,33 @@ const isDealsButtonActive = ref(false)
 
 const finalPrice = computed((): string => (props.product.price * props.product.count).toLocaleString('ru-RU'))
 const localePrice = computed((): string => (props.product.price).toLocaleString('ru-RU'))
-const isProductsPage = computed((): boolean => props.typeOfPage === Enums.Routes.PRODUCTS)
-const isFavoritePage = computed((): boolean => props.typeOfPage === Enums.Routes.FAVORITE)
-const isDealsPage = computed((): boolean => props.typeOfPage === Enums.Routes.DEALS)
 
-const addToFavorite = () => {
-  emits('action', {type:Enums.ProductActions.ADD_TO_FAVORITE, data:props.product});
-  isFavoriteButtonActive.value = true
+
+const productDeals = computed((): boolean => props.product.status === Enums.ProductStatus.DEAL)
+const productPaid = computed((): boolean => props.product.status === Enums.ProductStatus.PAID)
+
+const filterAll = computed(() => props.filterType === Enums.FilterType.ALL)
+const filterFavorite = computed(() => props.filterType === Enums.FilterType.FAVORITE)
+
+
+const toggleFavorite = () => {
+  emits('action', {
+    data: {...props.product, favorite: !props.product.favorite}
+  });
+  isFavoriteButtonActive.value = !isFavoriteButtonActive.value
 }
 const addToDeals = () => {
-  emits('action', {type:Enums.ProductActions.ADD_TO_DEALS, data:props.product})
+  emits('action', {
+    data: {...props.product, status: Enums.ProductStatus.DEAL}
+  })
   isDealsButtonActive.value = true
+}
+
+const payProduct = () => {
+  emits('action', {
+    data: {...props.product, status: Enums.ProductStatus.PAID}
+  })
+  isPayButtonActive.value = true
 }
 </script>
 
@@ -216,10 +237,27 @@ const addToDeals = () => {
       display: flex;
       align-items: center;
       justify-content: space-between;
+      gap: 12px;
 
       &.favorite {
         flex-direction: column;
         row-gap: 10px;
+      }
+
+      & button {
+        width: 100%;
+
+        &.icon {
+          max-width: 40px;
+        }
+
+        &.pay-button {
+          &.active {
+            color: $color-secondary;
+            background-color: transparent;
+            border: 1px solid $color-secondary;
+          }
+        }
       }
 
     }

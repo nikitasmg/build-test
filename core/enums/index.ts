@@ -4,14 +4,14 @@ export enum Colors {
     SUCCESS = 'success',
 }
 
-export enum ProductActions {
-    ADD_TO_FAVORITE= 'addToFavorite',
-    ADD_TO_DEALS= 'addToDeals',
-    BUY_PRODUCT= 'BuyProduct',
+export enum FilterType {
+    ALL='ALL',
+    FAVORITE='FAVORITE',
+    DEALS='DEALS',
 }
 
-export enum Routes {
-    PRODUCTS = '/products',
-    FAVORITE = '/favorite',
-    DEALS = '/deals',
+export enum ProductStatus {
+    DEFAULT= 'DEFAULT',
+    DEAL = "DEAL",
+    PAID = 'PAID'
 }
