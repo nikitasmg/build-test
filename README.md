@@ -24,6 +24,10 @@ Client and Json server started concurrently
 npm run start
 ```
 
+Nuxt will start on port 8000
+
+Json-Server on port 3004
+
 ## Production
 
 Build the application for production:
