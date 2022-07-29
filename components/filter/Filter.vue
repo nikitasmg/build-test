@@ -37,7 +37,7 @@ const changeActiveElement = (idx: number, item:string) => {
 
   padding: 0 12px;
 
-  max-width: 300px;
+  max-width: 320px;
 
   list-style: none;
 
