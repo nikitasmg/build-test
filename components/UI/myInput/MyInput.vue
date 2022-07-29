@@ -53,7 +53,8 @@ const emit = defineEmits(['update:modelValue'])
 
   &__button {
     position: absolute;
-    top: 7px;
+    top: 50%;
+    transform: translateY(-50%);
     right: 4px;
   }
 }

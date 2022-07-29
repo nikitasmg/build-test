@@ -29,6 +29,7 @@ const emit = defineEmits(['click'])
   align-items: center;
 
   padding: 12px;
+  height: 40px;
   outline: none;
   border: none;
   border-radius: $b-radius-sm;
