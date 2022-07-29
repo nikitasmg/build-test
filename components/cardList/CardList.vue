@@ -9,7 +9,7 @@
     <div v-else-if="error" class="title">Произошла ошибка...</div>
     <TransitionGroup v-else name="list" tag="div" class="cards">
       <Card
-          v-for="product in products"
+          v-for="product in visibleData"
           class="card"
           :key="product.id"
           :product="product"
@@ -42,7 +42,6 @@ const filter = ref('Все типы')
 
 // API
 const {data: products, error, pending} = useFilterProducts()
-console.log(products.value)
 const {updateProduct} = useFetchProducts()
 
 
